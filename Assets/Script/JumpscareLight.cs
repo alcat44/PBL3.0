@@ -18,7 +18,7 @@ public class JumpscareLight : MonoBehaviour
             collision.enabled = false;
             MatikanLampu();
             MainkanSuaraTakut();
-            StartCoroutine(NonaktifkanJumpscareSetelahDelay(15f)); // Memanggil Coroutine
+            StartCoroutine(NonaktifkanJumpscareSetelahDelay(2.0f)); // Memanggil Coroutine
             NonaktifkanTrigger();
         }
     }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour
 {
     public GameObject Pausemenu;
+    public GameObject howToPlayCanvas;
     public string sceneName;
     public bool toggle;
     public SC_FPSController playerScript;
@@ -56,5 +57,17 @@ public class Pause : MonoBehaviour
     {
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    public void ShowHowToPlay()
+    {
+        howToPlayCanvas.SetActive(true);
+        Pausemenu.SetActive(false);
+    }
+
+    public void HideHowToPlay()
+    {
+        howToPlayCanvas.SetActive(false);
+        Pausemenu.SetActive(true);
     }
 }

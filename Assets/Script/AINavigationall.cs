@@ -24,6 +24,10 @@ public class AINavigationall : MonoBehaviour
     public AudioClip chaseSound;
     private AudioSource audioSource;
 
+    // Tambahkan daftar checkpoint dan variabel untuk melacak checkpoint saat ini
+    public List<Transform> checkpoints;
+    private int currentCheckpointIndex = -1;
+
     void Start()
     {
         walking = true;
@@ -85,7 +89,7 @@ public class AINavigationall : MonoBehaviour
                 randNum = Random.Range(0, destinations.Count);
                 currentDest = destinations[randNum];
 
-                // Hentikan suara pengejaran jika jarak lebih dari 20 unit
+                // Hentikan suara pengejaran jika jarak lebih dari 30 unit
                 if (audioSource != null && audioSource.isPlaying)
                 {
                     audioSource.Stop();
@@ -157,7 +161,17 @@ public class AINavigationall : MonoBehaviour
             jumpscareCamera.gameObject.SetActive(false); // Nonaktifkan kamera jumpscare
             mainCamera.gameObject.SetActive(true); // Aktifkan kembali kamera utama
         }
-        player.position = initialPlayerPosition; // Kembalikan posisi pemain ke posisi awal
+        // Setel posisi pemain ke checkpoint terakhir
+        if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpoints.Count)
+        {
+            player.position = checkpoints[currentCheckpointIndex].position;
+            Debug.Log("Player moved to checkpoint: " + currentCheckpointIndex);
+        }
+        else
+        {
+            player.position = initialPlayerPosition; // Kembalikan posisi pemain ke posisi awal
+            Debug.Log("Player moved to initial position.");
+        }
         player.gameObject.SetActive(true); // Aktifkan kembali pemain
         // Kembalikan musuh ke mode patroli
         walking = true;
@@ -171,6 +185,15 @@ public class AINavigationall : MonoBehaviour
         if (audioSource != null && audioSource.isPlaying)
         {
             audioSource.Stop();
+        }
+    }
+
+    public void SetCheckpoint(int checkpointIndex)
+    {
+        if (checkpointIndex >= 0 && checkpointIndex < checkpoints.Count)
+        {
+            currentCheckpointIndex = checkpointIndex;
+            Debug.Log("Checkpoint set to: " + checkpointIndex);
         }
     }
 }
