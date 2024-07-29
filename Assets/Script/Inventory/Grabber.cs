@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class Grabber : MonoBehaviour
 {
@@ -18,6 +20,11 @@ public class Grabber : MonoBehaviour
     public GameObject Lantai22;
     public GameObject Lantai23;
     public GameObject fotoMakanan;
+    public Canvas cutsceneCanvas;
+    public TMP_Text cutsceneText;
+     public string[] cutsceneLines;
+    public float textDisplayTime = 3.0f;
+    public string sceneName;
 
     [Header("Position")]
     public Transform playerHand; // Reference to the player's hand transform
@@ -28,6 +35,28 @@ public class Grabber : MonoBehaviour
     public bool isDroppingAtTrigger = false;
     public bool fotoMakananInstantiated = false;
 
+    private IEnumerator PlayCutscene()
+    {
+        Time.timeScale = 0;
+        cutsceneCanvas.gameObject.SetActive(true);
+
+        foreach (string line in cutsceneLines)
+        {
+            cutsceneText.text = line;
+            yield return new WaitForSecondsRealtime(textDisplayTime);
+        }
+
+        cutsceneCanvas.gameObject.SetActive(false);
+        SceneManager.LoadScene(sceneName);;
+    }
+
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Over"))
+        {
+           StartCoroutine(PlayCutscene());
+        }
+    }
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("drag")  && selectedObject == null)
@@ -164,7 +193,7 @@ public class Grabber : MonoBehaviour
                 Vector3.Distance(baju3.transform.position, baju3Position) < 0.5f)
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
-                Instantiate(fotoMakanan, new Vector3(57, 5, -3), Quaternion.Euler(90, 0, 45));
+                Instantiate(fotoMakanan, new Vector3(59.2f, 2.19f, -3f), Quaternion.Euler(-88.077f, -77.45f, -11.8f));
                 fotoMakananInstantiated = true;
                 Lantai21.SetActive(false);
                 Lantai22.SetActive(false);

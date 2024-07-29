@@ -30,13 +30,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6383869044928301644}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 6.586214, y: 5.26, z: 14.26}
-  m_LocalScale: {x: 0.06, y: 0.050000004, z: 0.089999996}
+  m_LocalRotation: {x: -0.24932012, y: 0.47747087, z: 0.68266654, w: -0.49378887}
+  m_LocalPosition: {x: -25.924, y: 12.628, z: -9.127}
+  m_LocalScale: {x: 91.14928, y: 251.29257, z: 91.14928}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6738242459290630150
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6383869044928301644}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 9165445225319907450, guid: aeb86e42aa847f64e916416b900b84b6, type: 3}
 --- !u!23 &3254630066342633958
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 11592858567b6e34ba3a6e750114623a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,7 +108,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 9165445225319907450, guid: aeb86e42aa847f64e916416b900b84b6, type: 3}
 --- !u!114 &-514994467808038026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,12 +136,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: fcda596cb6c59054ca85af628e800c69, type: 2}
   pickupText: {fileID: 0}
-  itemObject: {fileID: 6383869044928301644}
   pickup: {fileID: 0}
-  inventoryManager: {fileID: 0}
+  Index: 0
+  Id: 0
   interactable: 0
-  itemPlacementTag: ItemPlacement
-  MainCameraTag: MainCamera
 --- !u!54 &1944683543005104342
 Rigidbody:
   m_ObjectHideFlags: 0

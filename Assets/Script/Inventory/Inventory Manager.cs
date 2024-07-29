@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject Serundeng, Telor, BerasKetan, Lantern, Kertas, KerakTelor;
     public GameObject itemInstance;
     public Transform player;
+    
     public Vector3 itemPlacementPosition;
     public bool isInventoryOpen = false;
     public bool equip = false;
@@ -146,7 +147,7 @@ public class InventoryManager : MonoBehaviour
 
             if (item.prefab != null && player != null)
             {
-                itemInstance = Instantiate(item.prefab, player.position, player.rotation);
+                itemInstance = Instantiate(item.prefab, player.position, Quaternion.Euler(0, -225, -90));
                 itemInstance.transform.SetParent(player);
                 
 
