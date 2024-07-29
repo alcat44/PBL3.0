@@ -7,15 +7,11 @@ public class MENU : MonoBehaviour
 {
     public GameObject loadingscreen, menuobj, settingsobj;
     public string sceneName;
-    public Canvas menuCanvas;
-    public Canvas cutsceneCanvas;
 
     public void playGame()
     {
-        cutsceneCanvas.gameObject.SetActive(true);
-        menuCanvas.gameObject.SetActive(false);
-        //loadingscreen.SetActive(true);
-        
+        loadingscreen.SetActive(true);
+        SceneManager.LoadScene(sceneName);
     }
     public void quitGame()
     {
