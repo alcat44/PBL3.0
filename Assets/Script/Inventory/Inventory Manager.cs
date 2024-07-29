@@ -12,11 +12,14 @@ public class InventoryManager : MonoBehaviour
 
     public Transform ItemContent;
     public GameObject InventoryItem, Inventory, Info, pickupText, dropText;
+    public GameObject Serundeng, Telor, BerasKetan, Lantern, Kertas, KerakTelor;
     public GameObject itemInstance;
     public Transform player;
+    public Vector3 itemPlacementPosition;
     public bool isInventoryOpen = false;
     public bool equip = false;
-    public int Index;
+    public bool Reward = false;
+    public int Index, Id;
 
     private void Awake()
     {
@@ -89,6 +92,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
+        //Id = InventoryManager.Instance.Items[Index].id;
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
@@ -105,6 +109,9 @@ public class InventoryManager : MonoBehaviour
                 Unequip();
             }
         }
+
+        
+        
     }
 
     public void ToggleInventory()
@@ -123,6 +130,7 @@ public class InventoryManager : MonoBehaviour
 
         var item = Items[slotIndex];
         Index = slotIndex;
+        Id = InventoryManager.Instance.Items[Index].id;
         if (item != null)
         {
             Debug.Log($"Using item: {item.itemName}");
@@ -151,7 +159,7 @@ public class InventoryManager : MonoBehaviour
                 //itemDrop.interactable = false;
                 if (itemPickUp != null)
                 {
-                    itemPickUp.enabled = false;
+                    //itemPickUp.enabled = false;
                     //itemDrop.enabled = true;
                     //itemPickUp.inventoryManager = this;
                     itemPickUp.pickupText = pickupText;
@@ -177,6 +185,7 @@ public class InventoryManager : MonoBehaviour
                 //}
 
                 equip = true;
+                Info.SetActive(true);
             }
             else
             {
@@ -196,6 +205,9 @@ public class InventoryManager : MonoBehaviour
                 Destroy(instantiatedItem);
             }
         }
+        Id = 0;
+        Index = 0;
+        Info.SetActive(false);
         instantiatedItems.Clear();
         equip = false;
     }
@@ -209,10 +221,13 @@ public class InventoryManager : MonoBehaviour
             itemToPlace.transform.position = position;
 
             instantiatedItems.RemoveAt(0);
+            instantiatedItems.Add(itemToPlace); // Add the placed item back to the list
         }
         else
         {
             Debug.LogError("No item to place.");
         }
     }
+
+    
 }

@@ -1,103 +1,155 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class Grabber : MonoBehaviour
 {
+    [Header("Text")]
     private GameObject selectedObject;
     public GameObject pickupText, dropText;
+    public GameObject messageText;
+
+    [Header("Game Object")]
+    public GameObject baju1;
+    public GameObject baju2;
+    public GameObject baju3;
+    public GameObject Lantai21;
+    public GameObject Lantai22;
+    public GameObject Lantai23;
+    public GameObject fotoMakanan;
+
+    [Header("Position")]
     public Transform playerHand; // Reference to the player's hand transform
-    public bool isDroppingAtTrigger = false;
     private Vector3 triggerPosition;
     public Vector3 baju1Position, baju2Position, baju3Position;
-    public GameObject baju1, baju2, baju3, fotoMakanan;
+
+    [Header("Bool")]
+    public bool isDroppingAtTrigger = false;
     public bool fotoMakananInstantiated = false;
 
     void OnTriggerStay(Collider other)
     {
-        if (selectedObject != null && other.CompareTag("BajuPlacement"))
+        if (other.CompareTag("drag")  && selectedObject == null)
+        {
+            Debug.Log("Bisa digrab");
+            pickupText.SetActive(true);
+            dropText.SetActive(false);
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                selectedObject = other.gameObject;
+                selectedObject.transform.SetParent(playerHand);
+                selectedObject.transform.localPosition = Vector3.zero;
+                pickupText.SetActive(false);
+                dropText.SetActive(false);
+            }
+        }
+        else if (selectedObject != null && other.CompareTag("BajuPlacement"))
         {
             Debug.Log("Bisa didrop");
-            pickupText.SetActive(true);
+            pickupText.SetActive(false);
+            dropText.SetActive(true);
             triggerPosition = other.transform.position;
             isDroppingAtTrigger = true;
+
+            /*if (Input.GetKeyDown(KeyCode.F))
+            {
+                DropAtTriggerPosition();
+            }*/
+        }
+        else if (other.CompareTag("lemari"))
+        {
+            pickupText.SetActive(true);
+            dropText.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                StartCoroutine(DisplayMessage("Why is it empty in here", 2));
+            }
+            
+        }
+        else
+        {
+            pickupText.SetActive(false);
+            dropText.SetActive(false);
         }
     }
 
-    void OnTriggerExit(Collider other) {
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("drag"))
+        {
+            pickupText.SetActive(false);
+            dropText.SetActive(false);
+        }
+
+        if (other.CompareTag("lemari"))
+        {
+            pickupText.SetActive(false);
+            dropText.SetActive(false);
+        }
+
         if (selectedObject != null && other.CompareTag("BajuPlacement"))
         {
-            
             pickupText.SetActive(false);
+            dropText.SetActive(false);
             isDroppingAtTrigger = false;
         }
     }
 
+    private IEnumerator DisplayMessage(string message, float delay)
+    {
+        //messageText.text = message;
+        //messageText.enabled = true;  // Make sure the Text component is enabled
+        messageText.SetActive(true);
+        yield return new WaitForSeconds(delay);
+        messageText.SetActive(false);
+        //messageText.enabled = false;  // Hide the message after the delay
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (selectedObject != null && Input.GetKeyDown(KeyCode.F))
         {
-            if (selectedObject == null)
+            if (isDroppingAtTrigger)
             {
-                RaycastHit hit = CastRay();
-
-                if (hit.collider != null)
-                {
-                    if (!hit.collider.CompareTag("drag"))
-                    {
-                        pickupText.SetActive(false);
-                        return;
-                    }
-                    else
-                    {
-                        pickupText.SetActive(true);
-                    }
-                    
-                    selectedObject = hit.collider.gameObject;
-                    selectedObject.transform.SetParent(playerHand);
-                    selectedObject.transform.localPosition = Vector3.zero;
-                }
+                DropAtTriggerPosition();
             }
             else
             {
-                if (isDroppingAtTrigger)
-                {
-                    Debug.Log("Dropping at trigger position.");
-                    selectedObject.transform.position = triggerPosition;
-                    
-                    DropSelectedObject();
-                    isDroppingAtTrigger = false;
-                }
-                else
-                {
-                    Debug.Log("Dropping at current position.");
-                    Vector3 currentPosition = selectedObject.transform.position;
-                    currentPosition.y = 3.5f;
-                    selectedObject.transform.position = currentPosition;
-                    DropSelectedObject();
-                }
+                DropAtCurrentPosition();
             }
-            
-            
         }
 
-        
         CheckPositions();
-        
-        
     }
 
-    private RaycastHit CastRay()
+    private void DropAtTriggerPosition()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hit);
-        return hit;
+        Debug.Log("Dropping at trigger position.");
+        selectedObject.transform.position = triggerPosition;
+        DropSelectedObject();
+        isDroppingAtTrigger = false;
+        dropText.SetActive(false);
+        pickupText.SetActive(false);
+    }
+
+    private void DropAtCurrentPosition()
+    {
+        Debug.Log("Dropping at current position.");
+        Vector3 currentPosition = selectedObject.transform.position;
+        currentPosition.y = 7.8f;
+        selectedObject.transform.position = currentPosition;
+        DropSelectedObject();
+        dropText.SetActive(false);
+        pickupText.SetActive(false);
     }
 
     private void DropSelectedObject()
     {
         if (selectedObject != null)
         {
-            selectedObject.transform.rotation = Quaternion.identity;
+            selectedObject.transform.rotation = Quaternion.Euler(-85, 133, -8.4f);
             selectedObject.transform.SetParent(null);
             selectedObject = null;
         }
@@ -107,13 +159,16 @@ public class Grabber : MonoBehaviour
     {
         if (!fotoMakananInstantiated && baju1 != null && baju2 != null && baju3 != null)
         {
-            if (Vector3.Distance(baju1.transform.position, baju1Position) < 0.1f &&
-                Vector3.Distance(baju2.transform.position, baju2Position) < 0.1f &&
-                Vector3.Distance(baju3.transform.position, baju3Position) < 0.1f)
+            if (Vector3.Distance(baju1.transform.position, baju1Position) < 0.5f &&
+                Vector3.Distance(baju2.transform.position, baju2Position) < 0.5f &&
+                Vector3.Distance(baju3.transform.position, baju3Position) < 0.5f)
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
                 Instantiate(fotoMakanan, new Vector3(57, 5, -3), Quaternion.Euler(90, 0, 45));
                 fotoMakananInstantiated = true;
+                Lantai21.SetActive(false);
+                Lantai22.SetActive(false);
+                Lantai23.SetActive(false);
             }
         }
     }
