@@ -6,15 +6,17 @@ using TMPro;
 public class JumpscareReward : MonoBehaviour
 {
     public AudioSource scareSound;
-    public Collider collision; // Collider yang digunakan sebagai trigger jumpscare
+    public Collider jumpscareTrigger; // Collider yang digunakan sebagai trigger jumpscare
     public GameObject Jumpscare;
     public TextMeshProUGUI conversationText; // TextMeshPro untuk percakapan
     public GameObject rewardObject; // Game object yang akan diaktifkan setelah jumpscare
     public MonoBehaviour playerMovementScript; // Script movement player
+    public Collider postJumpscareTrigger; // Collider yang digunakan sebagai trigger setelah jumpscare
 
     void Start()
     {
-        collision.enabled = false; // Pastikan collider dinonaktifkan pada awalnya
+        jumpscareTrigger.enabled = false; // Pastikan collider dinonaktifkan pada awalnya
+        postJumpscareTrigger.enabled = false; // Pastikan collider kedua juga dinonaktifkan pada awalnya
         conversationText.gameObject.SetActive(false); // Pastikan teks percakapan tidak aktif di awal
         rewardObject.SetActive(false); // Pastikan rewardObject tidak aktif di awal
     }
@@ -23,12 +25,24 @@ public class JumpscareReward : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Jumpscare.SetActive(true);
-            collision.enabled = false; // Nonaktifkan collider setelah trigger
-            PlayScareSound();
-            DisablePlayerMovement(); // Nonaktifkan movement player
-            StartCoroutine(JumpscareCoroutine()); // Mulai jumpscare dengan penundaan
+            if (jumpscareTrigger.enabled)
+            {
+                TriggerJumpscare();
+            }
+            else if (postJumpscareTrigger.enabled)
+            {
+                TriggerPostJumpscareEvent();
+            }
         }
+    }
+
+    void TriggerJumpscare()
+    {
+        Jumpscare.SetActive(true);
+        jumpscareTrigger.enabled = false; // Nonaktifkan collider jumpscare setelah trigger
+        PlayScareSound();
+        DisablePlayerMovement(); // Nonaktifkan movement player
+        StartCoroutine(JumpscareCoroutine()); // Mulai jumpscare dengan penundaan
     }
 
     void PlayScareSound()
@@ -58,7 +72,7 @@ public class JumpscareReward : MonoBehaviour
     // Fungsi untuk mengaktifkan collider jumpscare
     public void ActivateJumpscareTrigger()
     {
-        collision.enabled = true;
+        jumpscareTrigger.enabled = true;
     }
 
     IEnumerator JumpscareCoroutine()
@@ -68,5 +82,15 @@ public class JumpscareReward : MonoBehaviour
         Jumpscare.SetActive(false); // Nonaktifkan jumpscare setelah selesai
         EnablePlayerMovement(); // Aktifkan kembali movement player
         rewardObject.SetActive(true); // Aktifkan rewardObject setelah jumpscare selesai
+        postJumpscareTrigger.enabled = true; // Aktifkan collider untuk trigger setelah jumpscare
+    }
+
+    void TriggerPostJumpscareEvent()
+    {
+        // Lakukan aksi yang diinginkan setelah trigger kedua aktif
+        conversationText.gameObject.SetActive(true);
+        conversationText.text = "Selamat! Kamu berhasil mengatasi jumpscare.";
+        // Nonaktifkan collider agar tidak dipicu berulang kali
+        postJumpscareTrigger.enabled = false;
     }
 }

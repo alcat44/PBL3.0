@@ -20,6 +20,7 @@ public class SC_FPSController : MonoBehaviour
 
     private CharacterController characterController;
     private AudioSource audioSource;
+    private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
@@ -30,6 +31,7 @@ public class SC_FPSController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
 
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -79,6 +81,12 @@ public class SC_FPSController : MonoBehaviour
 
         // Handle sound effects
         HandleMovementSound(curSpeedX, curSpeedY, isRunning);
+
+        // Update animator parameters
+        float speed = new Vector3(characterController.velocity.x, 0, characterController.velocity.z).magnitude;
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("IsRunning", isRunning);
+        animator.SetBool("isIdle", speed == 0);
     }
 
     void HandleMovementSound(float curSpeedX, float curSpeedY, bool isRunning)
