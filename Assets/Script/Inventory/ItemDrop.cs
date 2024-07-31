@@ -6,6 +6,7 @@ public class ItemDrop : MonoBehaviour
 {
     public int Index = 0, id, dropIndex;
     public Item item;
+    public static ItemDrop Instance;
     public List<GameObject> droppedItems = new List<GameObject>();
 
     [Header("Game Object")]
@@ -13,12 +14,16 @@ public class ItemDrop : MonoBehaviour
     public GameObject itemDrop;
     public GameObject KerakTelor;
     public GameObject KertasMusik;
+    public GameObject Ondel;
     public GameObject lantai31;
     public GameObject lantai32;
     public GameObject lantai33;
 
     [Header("Position")]
     public Transform player;
+    public Transform telor;
+    public Transform kelapa;
+    public Transform beras;
     public Vector3 itemPlacementPosition;
 
     [Header("Text")]
@@ -28,6 +33,14 @@ public class ItemDrop : MonoBehaviour
     public bool interactable = false;
     public bool Misi1 = false;
     public bool Misi2 = false;
+    public bool Misi3 = false;
+    public bool anidio = false;
+
+    private void Awake()
+    {
+        Instance = this;
+        
+    }
 
     void Drop(int Index)
     {
@@ -64,6 +77,30 @@ public class ItemDrop : MonoBehaviour
         Destroy(itemObject);
     }
 
+    void DropOndel(int Index)
+    {
+        dropIndex = droppedItems.Count;
+        
+        var item = InventoryManager.Instance.Items[Index];
+        id = InventoryManager.Instance.Id;
+
+        InventoryManager.Instance.Remove(item);
+        itemDrop = Instantiate(itemObject, new Vector3(-50.8f, 6f, 8.44f), Quaternion.Euler(-90, 0 , 60));
+        droppedItems.Add(itemDrop);
+        Destroy(itemObject);
+        //Destroy(gameObject);
+        interactable = false;
+        
+        foreach (var droppedItem in droppedItems)
+        {
+            ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
+            if (itemPickUp != null)
+            {
+                itemPickUp.enabled = false;
+            }
+        }
+    }
+
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("KerakTelorPlacement") && (InventoryManager.Instance.Id == 7|| InventoryManager.Instance.Id == 8 || InventoryManager.Instance.Id == 9))
@@ -83,6 +120,17 @@ public class ItemDrop : MonoBehaviour
                 dropText.SetActive(true);
                 interactable = true;
                 itemPlacementPosition = other.transform.position;
+            }
+        }
+
+        if(other.CompareTag("Misi3")&& (InventoryManager.Instance.Id == 12))
+        {
+            if (InventoryManager.Instance.equip)
+            {
+                dropText.SetActive(true);
+                interactable = true;
+                itemPlacementPosition = other.transform.position;
+                anidio = true;
             }
         }
 
@@ -110,7 +158,7 @@ public class ItemDrop : MonoBehaviour
                 Vector3.Distance(droppedItems[2].transform.position, itemPlacementPosition) < 0.5f)
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
-                Instantiate(KerakTelor, new Vector3(-29.71f, 3, 4.65f), Quaternion.Euler(90, 0, 45));
+                Instantiate(KerakTelor, new Vector3(-31.6743f, 2.684477f, 6.6f), Quaternion.Euler(-67.522f, -27.028f, 75.697f));
                 Misi1 = true;
                 Destroy(droppedItems[0]);
                 Destroy(droppedItems[1]);
@@ -130,6 +178,16 @@ public class ItemDrop : MonoBehaviour
                 lantai33.SetActive(false);
             }
         }
+
+        if(!Misi3 && droppedItems[4] != null)
+        {
+            if (Vector3.Distance(droppedItems[4].transform.position, itemPlacementPosition) < 0.5f )
+            {
+                Debug.Log("All objects are in position. Instantiating new object.");
+                Instantiate(Ondel, new Vector3(-50.88271f, 6.043726f, 8.378923f), Quaternion.Euler(0, 0, 0));
+                Misi3 = true;
+            }
+        }
         
     }
 
@@ -141,10 +199,22 @@ public class ItemDrop : MonoBehaviour
         Index = InventoryManager.Instance.Index;
         if (interactable && Input.GetKeyDown(KeyCode.F) && InventoryManager.Instance.equip)
         {
+            if(InventoryManager.Instance.Id == 12)
+            {
+                DropOndel(Index);
+            }
+            if(InventoryManager.Instance.Id == 10)
+            {
+                
+            }
+            if(InventoryManager.Instance.Id != 12 || InventoryManager.Instance.Id != 10)
+            {
+                Drop(Index);
+            }
             //dropText.SetActive(false);
             interactable = false;
-            Drop(Index);
             InventoryManager.Instance.equip = false;
+
             
         }
         if (!interactable && Input.GetKeyDown(KeyCode.F) && InventoryManager.Instance.equip && id ==2)
@@ -153,6 +223,7 @@ public class ItemDrop : MonoBehaviour
             DropLantern(Index);
             InventoryManager.Instance.equip = false;
         }
+        
 
         if ((!Misi1 || !Misi2) && InventoryManager.Instance.instantiatedItems.Count > 0)
         {

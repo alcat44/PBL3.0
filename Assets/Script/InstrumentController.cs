@@ -54,6 +54,8 @@ public class InstrumentController : MonoBehaviour
         if (other.CompareTag("MainCamera"))
         {
             // Deteksi alat musik saat ini berdasarkan jarak terdekat
+            inttext.SetActive(true);
+            interactable = true;
             float minDistance = float.MaxValue;
             for (int i = 0; i < instrumentSounds.Length; i++)
             {

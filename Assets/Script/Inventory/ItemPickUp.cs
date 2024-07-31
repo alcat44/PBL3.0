@@ -7,7 +7,7 @@ public class ItemPickUp : MonoBehaviour
     public Item item;
     public GameObject pickupText;
     public AudioSource pickup;
-    public int Index;  // Slot index of the item being picked up
+    public int Index, Id;  // Slot index of the item being picked up
 
     public bool interactable = false;
 
@@ -18,6 +18,10 @@ public class ItemPickUp : MonoBehaviour
 
         // Set the item index in InventoryManager
         InventoryManager.Instance.Index = InventoryManager.Instance.Items.Count - 1;
+        Index = InventoryManager.Instance.Index;
+        InventoryManager.Instance.Id = Id;
+
+        InventoryManager.Instance.UpdateItemInformation(item);
 
         // Destroy the picked-up item
         Destroy(gameObject);
@@ -35,7 +39,15 @@ public class ItemPickUp : MonoBehaviour
         // Instantiate the item prefab if available
         if (item.prefab != null && InventoryManager.Instance.player != null)
         {
-            InventoryManager.Instance.itemInstance = Instantiate(item.prefab, InventoryManager.Instance.player.position, InventoryManager.Instance.player.rotation);
+            
+            if(InventoryManager.Instance.Id==1 || InventoryManager.Instance.Id==6 || InventoryManager.Instance.Id==11)
+                {
+                    InventoryManager.Instance.itemInstance = Instantiate(item.prefab, InventoryManager.Instance.player.position, Quaternion.Euler(0, 90, -90));
+                }
+                else
+                {
+                    InventoryManager.Instance.itemInstance = Instantiate(item.prefab, InventoryManager.Instance.player.position, InventoryManager.Instance.player.rotation);
+                }
             InventoryManager.Instance.itemInstance.transform.SetParent(InventoryManager.Instance.player);
             InventoryManager.Instance.equip = true;
             interactable = false;
@@ -46,7 +58,7 @@ public class ItemPickUp : MonoBehaviour
         ItemPickUp itemPickUp = InventoryManager.Instance.itemInstance.GetComponent<ItemPickUp>();
         if (itemPickUp != null)
         {
-            itemPickUp.enabled = false;
+            //itemPickUp.enabled = false;
             itemPickUp.pickupText = pickupText;
             itemPickUp.pickupText.SetActive(false);
         }
@@ -72,6 +84,7 @@ public class ItemPickUp : MonoBehaviour
 
     void Update()
     {
+        Id = item.id;
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             pickupText.SetActive(false);
