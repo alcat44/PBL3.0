@@ -6,14 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class GameFinished : MonoBehaviour
 {
+    public GameObject boss;
+    //public AudioSource audioboss;
     public Canvas cutsceneCanvas;
      public TMP_Text cutsceneText;
      public string[] cutsceneLines;
     public float textDisplayTime = 3.0f;
     public string sceneName;
+    
 
     private IEnumerator PlayCutscene()
     {
+        boss.SetActive(false);
+        //audioboss.enabled = false;
         Time.timeScale = 0;
         cutsceneCanvas.gameObject.SetActive(true);
 
@@ -25,6 +30,8 @@ public class GameFinished : MonoBehaviour
 
         cutsceneCanvas.gameObject.SetActive(false);
         SceneManager.LoadScene(sceneName);;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     void OnTriggerEnter(Collider other) 

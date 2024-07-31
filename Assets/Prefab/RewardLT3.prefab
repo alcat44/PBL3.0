@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 7783655609808710384}
   - component: {fileID: 7633082092146327055}
   - component: {fileID: 6290249602555759836}
-  - component: {fileID: 3454977868243678860}
-  - component: {fileID: 8163651002208956684}
   - component: {fileID: 4805928629792485224}
   - component: {fileID: 6025688761387909656}
   - component: {fileID: 4098409337539927968}
@@ -230,37 +228,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3454977868243678860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2742072031809250448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e8d72d6475861e44ac5341c6b42e8d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: ad61070516a39bd45a82132918bc50f1, type: 2}
---- !u!114 &8163651002208956684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2742072031809250448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fc143d39e7662742b7522a27eb67d57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: ad61070516a39bd45a82132918bc50f1, type: 2}
-  pickupText: {fileID: 0}
-  pickup: {fileID: 0}
-  Index: 0
-  Id: 0
-  interactable: 0
 --- !u!54 &4805928629792485224
 Rigidbody:
   m_ObjectHideFlags: 0

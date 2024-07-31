@@ -6,40 +6,32 @@ using TMPro;
 public class UpdateObjective : MonoBehaviour
 {
     public TextMeshProUGUI objectiveText;
-    private Dictionary<int, string> objectives = new Dictionary<int, string>();
-    private HashSet<int> completedObjectives = new HashSet<int>();
+    public GameObject icon;
+    public GameObject bahan;
+    public GameObject music;
+    
 
     public void UpdateObjectiveText(string newObjective)
     {
         objectiveText.text = newObjective;
     }
 
-    void Start()
+    void OnTriggerEnter(Collider other)
     {
-        // Inisialisasi teks objective awal
-        UpdateObjectiveText("Find the Brosur!");
-
-        // Tambahkan item ID dan teks objective yang sesuai ke dalam dictionary
-        objectives.Add(1, "Explore inside Museum Betawi");
-        objectives.Add(6, "Find the lost food");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (InventoryManager.Instance != null)
+        if (other.CompareTag("8Icon"))
         {
-            // Periksa apakah pemain memiliki item dengan ID yang dibutuhkan
-            foreach (Item item in InventoryManager.Instance.Items)
-            {
-                if (objectives.ContainsKey(item.id) && !completedObjectives.Contains(item.id))
-                {
-                    // Update objective jika item ditemukan
-                    UpdateObjectiveText(objectives[item.id]);
-                    completedObjectives.Add(item.id); // Tandai objective sebagai selesai
-                    break; // Hentikan loop setelah menemukan item yang sesuai
-                }
-            }
+            Destroy(icon);
+            UpdateObjectiveText("Don't get caught by the Ondel-ondel\n Mission 1 : Match the traditional cloth in the Traditional cloth gallery with the information on the front");
+        }
+        if (other.CompareTag("Bahan"))
+        {
+            Destroy(bahan);
+            UpdateObjectiveText("Mission 2 : Find the lost ingridients of the kerak telor on the second floor");
+        }
+        if (other.CompareTag("Music"))
+        {
+            Destroy(music);
+            UpdateObjectiveText("Mission 3 : Find the right melody");
         }
     }
 }

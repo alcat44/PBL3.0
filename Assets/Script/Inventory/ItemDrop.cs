@@ -15,12 +15,14 @@ public class ItemDrop : MonoBehaviour
     public GameObject KerakTelor;
     public GameObject KertasMusik;
     public GameObject Ondel;
+    
     public GameObject lantai31;
     public GameObject lantai32;
     public GameObject lantai33;
 
     [Header("Position")]
     public Transform player;
+    public Transform pintuTerakhir;
     public Transform telor;
     public Transform kelapa;
     public Transform beras;
@@ -75,6 +77,29 @@ public class ItemDrop : MonoBehaviour
         itemDrop = Instantiate(itemObject, new Vector3(player.position.x, player.position.y - 2, player.position.z -1), Quaternion.identity);
         droppedItems.Add(itemDrop);
         Destroy(itemObject);
+    }
+    void DropKerak(int Index)
+    {
+        dropIndex = droppedItems.Count;
+        
+        var item = InventoryManager.Instance.Items[Index];
+        id = InventoryManager.Instance.Id;
+
+        InventoryManager.Instance.Remove(item);
+        itemDrop = Instantiate(itemObject, new Vector3(4.444f, 19.94063f, 17.584f), Quaternion.Euler(-70.328f, 15.36913f , 73.747f));
+        droppedItems.Add(itemDrop);
+        Destroy(itemObject);
+        //Destroy(gameObject);
+        interactable = false;
+        
+        foreach (var droppedItem in droppedItems)
+        {
+            ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
+            if (itemPickUp != null)
+            {
+                itemPickUp.enabled = false;
+            }
+        }
     }
 
     void DropOndel(int Index)
@@ -168,7 +193,7 @@ public class ItemDrop : MonoBehaviour
 
         if (!Misi2 && droppedItems[3] != null)
         {
-            if (Vector3.Distance(droppedItems[3].transform.position, itemPlacementPosition) < 0.5f )
+            if (Vector3.Distance(droppedItems[3].transform.position, itemPlacementPosition) < 3.5f )
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
                 Instantiate(KertasMusik, new Vector3(5.152f, 20.5f, 15.184f), Quaternion.Euler(90, 0, 270));
@@ -181,10 +206,12 @@ public class ItemDrop : MonoBehaviour
 
         if(!Misi3 && droppedItems[4] != null)
         {
-            if (Vector3.Distance(droppedItems[4].transform.position, itemPlacementPosition) < 0.5f )
+            if (Vector3.Distance(droppedItems[4].transform.position, itemPlacementPosition) < 2.5f )
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
-                Instantiate(Ondel, new Vector3(-50.88271f, 6.043726f, 8.378923f), Quaternion.Euler(0, 0, 0));
+                //Instantiate(Ondel, new Vector3(-50.88271f, 6.043726f, 8.378923f), Quaternion.Euler(0, 0, 0));
+                pintuTerakhir.rotation = Quaternion.Euler(-90, 0, -94.312f);
+                InventoryManager.Instance.objective.text = ("Get Out from the museum");
                 Misi3 = true;
             }
         }
@@ -205,7 +232,7 @@ public class ItemDrop : MonoBehaviour
             }
             if(InventoryManager.Instance.Id == 10)
             {
-                
+                DropKerak(Index);
             }
             if(InventoryManager.Instance.Id != 12 || InventoryManager.Instance.Id != 10)
             {
@@ -225,7 +252,7 @@ public class ItemDrop : MonoBehaviour
         }
         
 
-        if ((!Misi1 || !Misi2) && InventoryManager.Instance.instantiatedItems.Count > 0)
+        if ((!Misi1 || !Misi2 || !Misi3) && InventoryManager.Instance.instantiatedItems.Count > 0)
         {
             CheckRewardConditions();
         }

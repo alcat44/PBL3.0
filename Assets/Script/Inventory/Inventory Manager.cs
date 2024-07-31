@@ -12,27 +12,33 @@ public class InventoryManager : MonoBehaviour
 
     public Transform ItemContent;
     public GameObject InventoryItem, Inventory, Info, pickupText, dropText;
-    public GameObject Serundeng, Telor, BerasKetan, Lantern, Kertas, KerakTelor;
+    public GameObject MapCanvas;
+    
+    //public GameObject Serundeng, Telor, BerasKetan, Lantern, Kertas, KerakTelor;
     public GameObject itemInstance;
     public Transform player;
     public Vector3 itemPlacementPosition;
     public TMP_Text objective;
+    public Image MapImage;
+    public Button NextMapButton, PreviousMapButton;
+    public bool map;
     public bool isInventoryOpen = false;
     public bool equip = false;
     public bool Reward = false;
-    public int Index, Id;
+    public int Index, Id, currentMapIndex;
 
     private void Awake()
     {
         Instance = this;
         Inventory.SetActive(false);
     }
+    
 
     public void Add(Item item)
     {
         Items.Add(item);
         ListItems();
-        if (item.id == 1 || item.id == 6 || item.id == 11)
+        if (item.id == 1 || item.id == 2 || item.id == 6 || item.id == 7|| item.id == 8|| item.id == 9 || item.id == 10 || item.id == 11 || item.id == 12)
         {
             UpdateObjective(item.id);
         }
@@ -64,24 +70,93 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private void UseMap()
+    {
+        // Check if player has item with ID 1
+        Item mapItem = Items.Find(item => item.id == 1);
+        if (mapItem != null)
+        {
+            map = !map;
+            // Activate the map canvas and show the first map image
+            MapCanvas.gameObject.SetActive(map);
+            currentMapIndex = 0;
+            MapImage.sprite = mapItem.images[currentMapIndex]; // Assuming 'images' is a list of Sprites in the Item scriptable object
+
+            // Assign button functions to switch maps
+            NextMapButton.onClick.AddListener(() => ShowNextMap(mapItem));
+            PreviousMapButton.onClick.AddListener(() => ShowPreviousMap(mapItem));
+            if(map == false)
+            {
+                Time.timeScale = 1;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else{
+                Time.timeScale = 0;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Player does not have the map item.");
+        }
+    }
+
+    private void ShowNextMap(Item item)
+    {
+        if (item.images.Count > 0)
+        {
+            currentMapIndex = (currentMapIndex + 1) % item.images.Count;
+            MapImage.sprite = item.images[currentMapIndex];
+        }
+        else
+        {
+            Debug.LogWarning("No maps available in the item.");
+        }
+    }
+
+    private void ShowPreviousMap(Item item)
+    {
+        if (item.images.Count > 0)
+        {
+            currentMapIndex = (currentMapIndex - 1 + item.images.Count) % item.images.Count;
+            MapImage.sprite = item.images[currentMapIndex];
+        }
+        else
+        {
+            Debug.LogWarning("No maps available in the item.");
+        }
+    }
+
     public void UpdateObjective(int itemId)
     {
+        Item Beras = Items.Find(item => item.id == 7);
+        Item kelapa = Items.Find(item => item.id == 8);
+        Item Telur = Items.Find(item => item.id == 9);
+        if(Beras != null && kelapa != null && Telur != null)
+        {
+            objective.text = "Put the Ingredients on the wajan in the 8 Icon gallery 1st floor!";
+        }
         switch (itemId)
         {
             case 1:
-                objective.text = "Match the Traditional cloth with the clue!";
+                objective.text = "Press m to open the map.\n Tour the 1st floor";
+                break;
+            case 2:
+                objective.text = "Match the clue number with the banner number in the third floor!\n And go to the gambang kromong gallery";
                 break;
             case 6:
-                objective.text = "Find the ingredients for cooking the lost cuisine!";
+                objective.text = "Check the photo with the food in the traditional food gallery second floor!";
                 break;
             case 10:
-                objective.text = "Put the kerak telor on the plate!";
+                objective.text = "Put the kerak telor on the plate in the traditional food gallery second floor!";
                 break;
             case 11:
-            objective.text = "Match the traditional music with the clue!";
+            objective.text = "Take the lantern on the table! \nMatch the clue number with the banner number in the third floor!\n And go to the gambang kromong gallery";
                 break;
                 case 12:
-            objective.text = "Put the Mini Ondel-ondel on the table in the traditional house!";
+            objective.text = "Put the Mini Ondel-ondel on the table on the table traditional house in the 8 icon gallery!";
                 break;
             default:
                 break;
@@ -125,6 +200,10 @@ public class InventoryManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            UseMap();
         }
 
         for (int i = 0; i < 10; i++)
