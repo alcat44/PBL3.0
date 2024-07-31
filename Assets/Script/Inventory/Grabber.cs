@@ -21,10 +21,7 @@ public class Grabber : MonoBehaviour
     public GameObject Lantai23;
     public GameObject fotoMakanan;
     public Canvas cutsceneCanvas;
-    public TMP_Text cutsceneText;
-     public string[] cutsceneLines;
-    public float textDisplayTime = 3.0f;
-    public string sceneName;
+   
 
     [Header("Position")]
     public Transform playerHand; // Reference to the player's hand transform
@@ -35,28 +32,7 @@ public class Grabber : MonoBehaviour
     public bool isDroppingAtTrigger = false;
     public bool fotoMakananInstantiated = false;
 
-    private IEnumerator PlayCutscene()
-    {
-        Time.timeScale = 0;
-        cutsceneCanvas.gameObject.SetActive(true);
-
-        foreach (string line in cutsceneLines)
-        {
-            cutsceneText.text = line;
-            yield return new WaitForSecondsRealtime(textDisplayTime);
-        }
-
-        cutsceneCanvas.gameObject.SetActive(false);
-        SceneManager.LoadScene(sceneName);;
-    }
-
-    void OnTriggerEnter(Collider other) 
-    {
-        if (other.CompareTag("Over"))
-        {
-           StartCoroutine(PlayCutscene());
-        }
-    }
+    
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("drag")  && selectedObject == null)
@@ -124,6 +100,7 @@ public class Grabber : MonoBehaviour
             dropText.SetActive(false);
             isDroppingAtTrigger = false;
         }
+        
     }
 
     private IEnumerator DisplayMessage(string message, float delay)

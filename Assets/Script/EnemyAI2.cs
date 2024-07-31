@@ -11,6 +11,9 @@ public class EnemyAI2 : MonoBehaviour
     public Camera jumpscareCamera; // Referensi ke kamera jumpscare
     private Vector3 initialPlayerPosition; // Menyimpan posisi awal pemain
     public Vector3 rayCastOffset;
+    public AudioClip chaseSound; // Referensi ke sound effect saat musuh mengejar
+    private AudioSource audioSource; // Referensi ke AudioSource
+    public float maxChaseDistance; // Batas maksimum jarak pengejaran
 
     void Start()
     {
@@ -19,11 +22,33 @@ public class EnemyAI2 : MonoBehaviour
         {
             jumpscareCamera.gameObject.SetActive(false); // Nonaktifkan kamera jumpscare pada awalnya
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component not found on the GameObject.");
+        }
     }
 
     void Update()
     {
-        // Selalu set destination musuh ke posisi pemain
+        float distance = Vector3.Distance(player.position, ai.transform.position);
+
+        // Hentikan pengejaran jika jarak melebihi batas yang ditentukan
+        if (distance > maxChaseDistance)
+        {
+            // Hentikan NavMeshAgent dan sound effect
+            ai.destination = transform.position;
+            ai.speed = 0;
+
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+            return; // Keluar dari update jika di luar jarak maksimum
+        }
+        
+        // Lanjutkan pengejaran jika jarak di dalam batas maksimum
         ai.destination = player.position;
         ai.speed = chaseSpeed;
 
@@ -33,12 +58,19 @@ public class EnemyAI2 : MonoBehaviour
             return; // Jika path belum siap atau tidak lengkap, keluar
         }
 
-        float distance = Vector3.Distance(player.position, ai.transform.position);
         if (distance <= catchDistance)
         {
             Debug.Log("Player caught!");
             player.gameObject.SetActive(false);
             StartCoroutine(deathRoutine());
+        }
+
+        // Mainkan sound effect saat musuh mulai mengejar
+        if (!audioSource.isPlaying && chaseSound != null)
+        {
+            audioSource.clip = chaseSound;
+            audioSource.loop = true;
+            audioSource.Play();
         }
     }
 
@@ -60,5 +92,11 @@ public class EnemyAI2 : MonoBehaviour
         // Kembalikan musuh ke posisi awal jika diperlukan
         ai.destination = transform.position; // Set destination ke posisi musuh untuk berhenti
         ai.speed = 0;
+
+        // Hentikan sound effect saat musuh berhenti mengejar
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 }

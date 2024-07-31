@@ -203,7 +203,11 @@ public class ItemDrop : MonoBehaviour
             {
                 DropOndel(Index);
             }
-            if(InventoryManager.Instance.Id != 12)
+            if(InventoryManager.Instance.Id == 10)
+            {
+                
+            }
+            if(InventoryManager.Instance.Id != 12 || InventoryManager.Instance.Id != 10)
             {
                 Drop(Index);
             }

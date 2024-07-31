@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 340074340917300801}
   - component: {fileID: 1434726676971436308}
   - component: {fileID: 6120606799725834471}
-  - component: {fileID: -1006047934356593115}
+  - component: {fileID: 9053168996934085638}
   m_Layer: 0
   m_Name: KerakTelor
   m_TagString: Untagged
@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 5196800667008330416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 21.469917, y: 21.469917, z: 2.7240195}
+  m_LocalPosition: {x: -2.53, y: 0, z: 0}
+  m_LocalScale: {x: 21.46992, y: 21.46992, z: 2.72402}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -145,7 +145,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &-1006047934356593115
+--- !u!135 &9053168996934085638
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,4 +165,4 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.02
-  m_Center: {x: 0.121021174, y: -0.011244007, z: -0.34350157}
+  m_Center: {x: 0.12102119, y: -0.011244011, z: -0.34350154}

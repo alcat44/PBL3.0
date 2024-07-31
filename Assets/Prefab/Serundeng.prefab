@@ -117,6 +117,7 @@ MonoBehaviour:
   pickupText: {fileID: 0}
   pickup: {fileID: 0}
   Index: 0
+  Id: 0
   interactable: 0
 --- !u!135 &5957619431772578963
 SphereCollider:

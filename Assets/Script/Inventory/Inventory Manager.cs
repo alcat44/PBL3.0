@@ -15,8 +15,8 @@ public class InventoryManager : MonoBehaviour
     public GameObject Serundeng, Telor, BerasKetan, Lantern, Kertas, KerakTelor;
     public GameObject itemInstance;
     public Transform player;
-    
     public Vector3 itemPlacementPosition;
+    public TMP_Text objective;
     public bool isInventoryOpen = false;
     public bool equip = false;
     public bool Reward = false;
@@ -32,6 +32,10 @@ public class InventoryManager : MonoBehaviour
     {
         Items.Add(item);
         ListItems();
+        if (item.id == 1 || item.id == 6 || item.id == 11)
+        {
+            UpdateObjective(item.id);
+        }
     }
 
     public void Remove(Item item)
@@ -57,6 +61,30 @@ public class InventoryManager : MonoBehaviour
             itemName.text = item.itemName;
             itemIcon.sprite = item.icon;
             itemNo.text = Items.IndexOf(item).ToString();
+        }
+    }
+
+    public void UpdateObjective(int itemId)
+    {
+        switch (itemId)
+        {
+            case 1:
+                objective.text = "Match the Traditional cloth with the clue!";
+                break;
+            case 6:
+                objective.text = "Find the ingredients for cooking the lost cuisine!";
+                break;
+            case 10:
+                objective.text = "Put the kerak telor on the plate!";
+                break;
+            case 11:
+            objective.text = "Match the traditional music with the clue!";
+                break;
+                case 12:
+            objective.text = "Put the Mini Ondel-ondel on the table in the traditional house!";
+                break;
+            default:
+                break;
         }
     }
 
@@ -111,7 +139,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        
         
     }
 
