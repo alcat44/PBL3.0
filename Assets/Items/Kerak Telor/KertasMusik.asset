@@ -16,4 +16,5 @@ MonoBehaviour:
   itemName: Music Paper
   itemInformation: 1 2 3
   icon: {fileID: 0}
-  prefab: {fileID: 3465158389157426585, guid: 56fc81ab7c2cc4b4ca2b30f769abf86f, type: 3}
+  prefab: {fileID: 1201674514506768017, guid: 67f87af9621edc84385b6faaaadee785, type: 3}
+  images: []

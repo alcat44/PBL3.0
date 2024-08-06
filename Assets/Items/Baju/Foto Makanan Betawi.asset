@@ -16,4 +16,5 @@ MonoBehaviour:
   itemName: Foto Makanan Betawi
   itemInformation: Bla Bla Bla
   icon: {fileID: 0}
-  prefab: {fileID: 3465158389157426585, guid: 990974a51dddd8143a193009766d4026, type: 3}
+  prefab: {fileID: 726171998402552514, guid: 051d1f5692d674044a978b8ef1c06c7f, type: 3}
+  images: []

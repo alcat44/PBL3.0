@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: NewLantern
   itemInformation: Lantern for Vision
   icon: {fileID: 0}
-  prefab: {fileID: 2187816639353528781, guid: 83f2b997ba8e7fe4b99b6f688b7ce187, type: 3}
+  prefab: {fileID: 7974000784811219913, guid: 6935acd15f7f6b740a7617346b02e1db, type: 3}
   images: []
