@@ -21,6 +21,7 @@ public class Grabber : MonoBehaviour
     public GameObject Lantai23;
     public GameObject fotoMakanan;
     public Canvas cutsceneCanvas;
+    public GameObject successText;
    
 
     [Header("Position")]
@@ -31,6 +32,7 @@ public class Grabber : MonoBehaviour
     [Header("Bool")]
     public bool isDroppingAtTrigger = false;
     public bool fotoMakananInstantiated = false;
+
 
     
     void OnTriggerStay(Collider other)
@@ -161,6 +163,11 @@ public class Grabber : MonoBehaviour
         }
     }
 
+    void HideSuccessText()
+    {
+        successText.SetActive(false); // Sembunyikan teks berhasil
+    }
+
     private void CheckPositions()
     {
         if (!fotoMakananInstantiated && baju1 != null && baju2 != null && baju3 != null)
@@ -169,6 +176,8 @@ public class Grabber : MonoBehaviour
                 Vector3.Distance(baju2.transform.position, baju2Position) < 0.5f &&
                 Vector3.Distance(baju3.transform.position, baju3Position) < 0.5f)
             {
+                successText.SetActive(true);
+                Invoke("HideSuccessText", 2.0f);
                 Debug.Log("All objects are in position. Instantiating new object.");
                 Instantiate(fotoMakanan, new Vector3(59.2f, 2.19f, -3f), Quaternion.Euler(-88.077f, -77.45f, -11.8f));
                 fotoMakananInstantiated = true;

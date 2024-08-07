@@ -30,6 +30,7 @@ public class ItemDrop : MonoBehaviour
 
     [Header("Text")]
     public GameObject dropText;
+    public GameObject successText;
 
     [Header("Bool")]
     public bool interactable = false;
@@ -86,11 +87,13 @@ public class ItemDrop : MonoBehaviour
         id = InventoryManager.Instance.Id;
 
         InventoryManager.Instance.Remove(item);
-        itemDrop = Instantiate(itemObject, new Vector3(4.444f, 19.94063f, 17.584f), Quaternion.Euler(-70.328f, 15.36913f , 73.747f));
+        itemDrop = Instantiate(itemObject, new Vector3(4.62300014f,19.8390007f,15.5059996f), Quaternion.Euler(-70.328f, 15.36913f , 73.747f));
         droppedItems.Add(itemDrop);
         Destroy(itemObject);
         //Destroy(gameObject);
         interactable = false;
+        successText.SetActive(true);
+        Invoke("HideSuccessText", 2.0f);
         
         foreach (var droppedItem in droppedItems)
         {
@@ -100,31 +103,42 @@ public class ItemDrop : MonoBehaviour
                 itemPickUp.enabled = false;
             }
         }
+    }
+
+    void HideSuccessText()
+    {
+        successText.SetActive(false); // Sembunyikan teks berhasil
     }
 
     void DropOndel(int Index)
-    {
-        dropIndex = droppedItems.Count;
-        
-        var item = InventoryManager.Instance.Items[Index];
-        id = InventoryManager.Instance.Id;
+{
+    dropIndex = droppedItems.Count;
 
-        InventoryManager.Instance.Remove(item);
-        itemDrop = Instantiate(itemObject, new Vector3(-50.8f, 6f, 8.44f), Quaternion.Euler(-90, 0 , 60));
-        droppedItems.Add(itemDrop);
-        Destroy(itemObject);
-        //Destroy(gameObject);
-        interactable = false;
-        
-        foreach (var droppedItem in droppedItems)
+    var item = InventoryManager.Instance.Items[Index];
+    id = InventoryManager.Instance.Id;
+
+    InventoryManager.Instance.Remove(item);
+    itemDrop = Instantiate(itemObject, new Vector3(-50.8279991f, 5.69899988f, 8.42469978f), Quaternion.Euler(-98, 57, 3));
+    
+    // Mengubah scale itemDrop menjadi setengah dari ukuran awal
+    itemDrop.transform.localScale *= 1.4f;
+    
+    droppedItems.Add(itemDrop);
+    Destroy(itemObject);
+    //Destroy(gameObject);
+    interactable = false;
+    successText.SetActive(true);
+    Invoke("HideSuccessText", 2.0f);
+
+    foreach (var droppedItem in droppedItems)
+    {
+        ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
+        if (itemPickUp != null)
         {
-            ItemPickUp itemPickUp = droppedItem.GetComponent<ItemPickUp>();
-            if (itemPickUp != null)
-            {
-                itemPickUp.enabled = false;
-            }
+            itemPickUp.enabled = false;
         }
     }
+}
 
     void OnTriggerStay(Collider other)
     {
@@ -183,7 +197,7 @@ public class ItemDrop : MonoBehaviour
                 Vector3.Distance(droppedItems[2].transform.position, itemPlacementPosition) < 0.5f)
             {
                 Debug.Log("All objects are in position. Instantiating new object.");
-                Instantiate(KerakTelor, new Vector3(-31.6743f, 2.684477f, 6.6f), Quaternion.Euler(-67.522f, -27.028f, 75.697f));
+                Instantiate(KerakTelor, new Vector3(-29.7089996f,2.66300011f,4.66099977f), Quaternion.Euler(-67.522f, -27.028f, 75.697f));
                 Misi1 = true;
                 Destroy(droppedItems[0]);
                 Destroy(droppedItems[1]);
@@ -211,7 +225,7 @@ public class ItemDrop : MonoBehaviour
                 Debug.Log("All objects are in position. Instantiating new object.");
                 //Instantiate(Ondel, new Vector3(-50.88271f, 6.043726f, 8.378923f), Quaternion.Euler(0, 0, 0));
                 pintuTerakhir.rotation = Quaternion.Euler(-90, 0, -94.312f);
-                InventoryManager.Instance.objective.text = ("Get Out from the museum");
+                InventoryManager.Instance.objective.text = ("⊙ Get out of the museum");
                 Misi3 = true;
             }
         }
