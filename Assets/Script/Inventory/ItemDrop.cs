@@ -118,10 +118,10 @@ public class ItemDrop : MonoBehaviour
     id = InventoryManager.Instance.Id;
 
     InventoryManager.Instance.Remove(item);
-    itemDrop = Instantiate(itemObject, new Vector3(-50.8279991f, 5.69899988f, 8.42469978f), Quaternion.Euler(-98, 57, 3));
+    itemDrop = Instantiate(itemObject, new Vector3(-50.8790016f,5.654f,8.40100002f), Quaternion.Euler(-1.272f, 59.98f, -0.417f));
     
     // Mengubah scale itemDrop menjadi setengah dari ukuran awal
-    itemDrop.transform.localScale *= 1.4f;
+    itemDrop.transform.localScale *= 1.3f;
     
     droppedItems.Add(itemDrop);
     Destroy(itemObject);
