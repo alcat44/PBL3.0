@@ -3,12 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Music
+  - Bahan
+  - 8Icon
+  - Instrumen
+  - KerakTelorPlacement
+  - Misi2
+  - Misi3
+  - Over
+  - BajuPlacement
+  - drag
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PostProcessing
   - Water
   - UI
   - 
